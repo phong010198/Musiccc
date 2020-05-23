@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#159588</color>
+    <color name="colorPrimaryDark">#0F655C</color>
+    <color name="colorPrimaryLight">#20DFCC</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="tabSelected">#FFFFFF</color>
+    <color name="tabUnselected">#acb4b8</color>
+    <color name="tabIndicator">#0f796b</color>
+    <color name="tabDivider">#dcfdfe</color>
+
+    <color name="dividerLineColorGrey">#dcdcdc</color>
+    <color name="grey_text">#757575</color>
+
+    <color name="item_pressed">#6633c4a2</color>
+</resources>

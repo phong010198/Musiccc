@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Musiccc</string>
+    <string name="tab_artist">Artist</string>
+    <string name="tab_track">Track</string>
+    <string name="tab_album">Album</string>
+    <string name="loading">Loading…</string>
+    <string name="empty_tracks">Nothing here</string>
+    <string name="default_time">00:00</string>
+</resources>
