@@ -11,7 +11,6 @@ class MusicService : Service() {
         private set
     var notificationMusiccc: NotificationMusiccc? = null
         private set
-    var isRestoredFromPause = false
 
     inner class MusicBinder : Binder() {
         val service: MusicService
@@ -35,5 +34,10 @@ class MusicService : Service() {
         notificationMusiccc = null
         playerHolder!!.stop()
         super.onDestroy()
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopSelf()
     }
 }

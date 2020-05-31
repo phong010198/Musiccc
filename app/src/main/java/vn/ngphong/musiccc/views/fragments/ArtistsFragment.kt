@@ -18,6 +18,7 @@ class ArtistsFragment : BaseFragment() {
     private var listArtists = mutableListOf<Artist>()
     private var artistAdapter: ArtistAdapter? = null
     private lateinit var recyclerArtist: RecyclerView
+
     override fun onServiceConnected() {
         initData()
     }

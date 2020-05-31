@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".views.fragments.AlbumsFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_albums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
+        android:id="@+id/tv_empty_albums"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/tab_album" />
-
-    <Button
-        android:id="@+id/btn_album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/tab_album" />
-</LinearLayout>
+        android:layout_gravity="center_vertical"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:text="@string/empty_tracks"
+        android:textColor="@color/grey_text"
+        android:textSize="18sp"
+        android:visibility="visible" />
+</FrameLayout>

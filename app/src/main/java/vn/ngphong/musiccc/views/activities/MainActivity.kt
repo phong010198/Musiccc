@@ -1,5 +1,6 @@
 package vn.ngphong.musiccc.views.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -66,6 +67,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         tabs.apply {
             addTab(this.newTab().setText("Tracks"))
             addTab(this.newTab().setText("Artists"))
+            addTab(this.newTab().setText("Albums"))
             this.tabGravity = TabLayout.GRAVITY_FILL
         }
         sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -103,7 +105,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             supportFragmentManager.popBackStackImmediate()
             main_content.visibility = View.VISIBLE
             app_bar.visibility = View.VISIBLE
-        } else super.onBackPressed()
+        } else {
+            val intent = Intent()
+            intent.action = Intent.ACTION_MAIN
+            intent.addCategory(Intent.CATEGORY_HOME)
+            startActivity(intent)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -139,7 +146,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         if (firstPlay) {
             iPlayerHolder!!.initPlayer()
             iPlayerHolder!!.updateTracks(DataLoader(this).queryTracks(), 0)
-            iPlayerHolder!!.setCurrentTrackByPos(iPlayerHolder!!.getRandomTrackPosition())
+            iPlayerHolder!!.setRandomTrackPos()
             iPlayerHolder!!.play()
         } else iPlayerHolder!!.resumePause()
         updateFooter()

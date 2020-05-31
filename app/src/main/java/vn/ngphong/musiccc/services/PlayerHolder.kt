@@ -55,10 +55,11 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
     private var tracks: MutableList<Track>? = null
     private var currentTrackPos = 0
     private var resumePosition = 0
-    private var isRepeat = false
+    private var repeatState = 0
+    private var isShuffle = false
 
     @PlaybackListener.State
-    private var state: Int = -1
+    private var state: Int = PlaybackListener.State.INVALID
 
     fun registerNotiReceiver() {
         notiReceiver = NotiReceiver()
@@ -105,10 +106,19 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
             playbackListener!!.onStateChanged(PlaybackListener.State.COMPLETED)
             playbackListener!!.onPlaybackCompleted()
         }
-        if (isRepeat) {
-            play()
-            setPlaybackState(PlaybackListener.State.PLAYING)
-        } else playNext()
+        when (repeatState) {
+            0 -> if (currentTrackPos == tracks!!.size - 1) {
+                currentTrackPos = 0
+                resumePosition = 0
+                play()
+                pause()
+                setPlaybackState(PlaybackListener.State.PAUSED)
+            }
+            1 -> {
+                play()
+            }
+            else -> playNext()
+        }
     }
 
     private fun setPlaybackState(@PlaybackListener.State state: Int) {
@@ -154,26 +164,17 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
         currentTrackPos = position
     }
 
-    fun setCurrentTrackByID(id: Long) {
-        for (track: Track in tracks!!) {
-            if (track.id == id) {
-                currentTrackPos = tracks!!.indexOf(track)
-            }
-        }
+    override fun setRandomTrackPos() {
+        val r = Random()
+        currentTrackPos = if (tracks.isNullOrEmpty()) {
+            0
+        } else r.nextInt(tracks!!.size)
     }
 
     override fun getCurrentTrack(): Track? {
         musicPreference.currentTrackPos = currentTrackPos
         musicPreference.currentTrackBookmark = getCurrentPosition()
         return tracks?.get(currentTrackPos)
-    }
-
-    override fun getRandomTrackPosition(): Int {
-        val r = Random()
-        if (tracks.isNullOrEmpty()) {
-            return 0
-        }
-        return r.nextInt(tracks!!.size)
     }
 
     override fun getResumePosition(): Int {
@@ -220,15 +221,41 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
     }
 
     override fun playPrev() {
-        if (currentTrackPos == 0) currentTrackPos = tracks!!.size - 1
-        else currentTrackPos--
+        when {
+            isShuffle -> setRandomTrackPos()
+            currentTrackPos == 0 -> currentTrackPos = tracks!!.size - 1
+            else -> currentTrackPos--
+        }
         play()
     }
 
     override fun playNext() {
-        if (currentTrackPos == tracks!!.size - 1) currentTrackPos = 0
-        else currentTrackPos++
+        when {
+            isShuffle -> setRandomTrackPos()
+            currentTrackPos == tracks!!.size - 1 -> currentTrackPos = 0
+            else -> currentTrackPos++
+        }
         play()
+    }
+
+    override fun changeShuffleState() {
+        isShuffle = !isShuffle
+    }
+
+    override fun getShuffleState(): Boolean {
+        return isShuffle
+    }
+
+    override fun changeRepeatState() {
+        repeatState = when (repeatState) {
+            0 -> 1
+            1 -> 2
+            else -> 0
+        }
+    }
+
+    override fun getRepeatState(): Int {
+        return repeatState
     }
 
     override fun onAudioFocusChange(focusChange: Int) {

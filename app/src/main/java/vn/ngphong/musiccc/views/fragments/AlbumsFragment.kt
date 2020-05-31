@@ -1,25 +1,58 @@
 package vn.ngphong.musiccc.views.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_albums.*
 import vn.ngphong.musiccc.R
+import vn.ngphong.musiccc.adapters.AlbumAdapter
+import vn.ngphong.musiccc.data.DataLoader
+import vn.ngphong.musiccc.models.Album
 
-class AlbumsFragment : Fragment() {
+class AlbumsFragment : BaseFragment() {
+    private var listAlbums = mutableListOf<Album>()
+    private var albumAdapter: AlbumAdapter? = null
+    private lateinit var recyclerAlbum: RecyclerView
+
+    override fun onServiceConnected() {
+        initData()
+    }
+
+    private fun initData() {
+        listAlbums = DataLoader(requireContext()).getAlbums()
+        if (listAlbums.isNotEmpty()) {
+            albumAdapter!!.updateData(listAlbums)
+            tv_empty_albums.visibility = View.GONE
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        binSer()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_albums, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_albums, container, false)
+        val manager = GridLayoutManager(requireContext(), 2)
+        recyclerAlbum = rootView.findViewById(R.id.recycler_albums)
+        recyclerAlbum.layoutManager = manager
+        albumAdapter = AlbumAdapter(listAlbums)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_album.setOnClickListener {
-            Toast.makeText(this.context, "OK", Toast.LENGTH_SHORT).show()
-        }
+        recyclerAlbum.adapter = albumAdapter
+        albumAdapter!!.setOnClickListener(object : AlbumAdapter.OnClickListener {
+            override fun onAlbumClick(position: Int) {
+
+            }
+        })
     }
 }

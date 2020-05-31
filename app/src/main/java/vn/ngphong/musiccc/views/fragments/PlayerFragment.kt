@@ -33,6 +33,8 @@ class PlayerFragment : Fragment() {
     lateinit var tvPlayerCurrentTime: TextView
     lateinit var imgPlayerArt: ImageView
     lateinit var imgPlayerPlayPause: ImageView
+    lateinit var imgShuffle: ImageView
+    lateinit var imgRepeat: ImageView
     var isSeeking = false
 
     inner class MyPlaybackListener : PlaybackListener() {
@@ -72,6 +74,8 @@ class PlayerFragment : Fragment() {
         tvPlayerCurrentTime = rootView.findViewById(R.id.player_tv_currentTime)
         imgPlayerArt = rootView.findViewById(R.id.player_img_art)
         imgPlayerPlayPause = rootView.findViewById(R.id.player_img_playPause)
+        imgShuffle = rootView.findViewById(R.id.player_img_shuffle)
+        imgRepeat = rootView.findViewById(R.id.player_img_repeat)
         return rootView
     }
 
@@ -100,7 +104,7 @@ class PlayerFragment : Fragment() {
             if (iPlayerHolder!!.isPlayerExist()) {
                 iPlayerHolder!!.playPrev()
             } else {
-                iPlayerHolder!!.setCurrentTrackByPos(iPlayerHolder!!.getRandomTrackPosition())
+                iPlayerHolder!!.setRandomTrackPos()
                 iPlayerHolder!!.play()
             }
             updateUI(iPlayerHolder!!.getCurrentTrack()!!)
@@ -110,7 +114,7 @@ class PlayerFragment : Fragment() {
             if (iPlayerHolder!!.isPlayerExist()) {
                 iPlayerHolder!!.playNext()
             } else {
-                iPlayerHolder!!.setCurrentTrackByPos(iPlayerHolder!!.getRandomTrackPosition())
+                iPlayerHolder!!.setRandomTrackPos()
                 iPlayerHolder!!.play()
             }
             updateUI(iPlayerHolder!!.getCurrentTrack()!!)
@@ -119,13 +123,26 @@ class PlayerFragment : Fragment() {
         player_img_playPause.setOnClickListener {
             @Suppress("DEPRECATION")
             if (iPlayerHolder!!.isPlaying()) {
-                player_img_playPause.setImageDrawable(resources.getDrawable(R.mipmap.ic_play_foreground))
+                player_img_playPause.setImageResource(R.mipmap.ic_play_foreground)
                 iPlayerHolder!!.pause()
             } else {
-                player_img_playPause.setImageDrawable(resources.getDrawable(R.mipmap.ic_pause_foreground))
+                player_img_playPause.setImageResource(R.mipmap.ic_pause_foreground)
                 iPlayerHolder!!.resume()
             }
             mainActivity!!.updateFooter()
+        }
+        player_img_shuffle.setOnClickListener {
+            if (iPlayerHolder!!.getShuffleState()) player_img_shuffle.setImageResource(R.mipmap.ic_shuffle_off_foreground)
+            else player_img_shuffle.setImageResource(R.mipmap.ic_shuffle_foreground)
+            iPlayerHolder!!.changeShuffleState()
+        }
+        player_img_repeat.setOnClickListener {
+            when (iPlayerHolder!!.getRepeatState()) {
+                0 -> player_img_repeat.setImageResource(R.mipmap.ic_repeat1_foreground)
+                1 -> player_img_repeat.setImageResource(R.mipmap.ic_repeat_foreground)
+                else -> player_img_repeat.setImageResource(R.mipmap.ic_repeat_off_foreground)
+            }
+            iPlayerHolder!!.changeRepeatState()
         }
     }
 
@@ -136,11 +153,20 @@ class PlayerFragment : Fragment() {
         if (musicService != null) {
             updateUI(iPlayerHolder!!.getCurrentTrack()!!)
         }
-        @Suppress("DEPRECATION")
         if (iPlayerHolder!!.getState() == PlaybackListener.State.PAUSED) {
-            player_img_playPause.setImageDrawable(resources.getDrawable(R.mipmap.ic_play_foreground))
+            player_img_playPause.setImageResource(R.mipmap.ic_play_foreground)
         } else {
-            player_img_playPause.setImageDrawable(resources.getDrawable(R.mipmap.ic_pause_foreground))
+            player_img_playPause.setImageResource(R.mipmap.ic_pause_foreground)
+        }
+        if (iPlayerHolder!!.getShuffleState()) {
+            player_img_shuffle.setImageResource(R.mipmap.ic_shuffle_foreground)
+        } else {
+            player_img_shuffle.setImageResource(R.mipmap.ic_shuffle_off_foreground)
+        }
+        when (iPlayerHolder!!.getRepeatState()) {
+            0 -> player_img_repeat.setImageResource(R.mipmap.ic_repeat_off_foreground)
+            1 -> player_img_repeat.setImageResource(R.mipmap.ic_repeat1_foreground)
+            2 -> player_img_repeat.setImageResource(R.mipmap.ic_repeat_foreground)
         }
     }
 

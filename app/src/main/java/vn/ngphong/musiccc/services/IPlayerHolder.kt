@@ -11,8 +11,8 @@ interface IPlayerHolder {
     fun initPlayer()
     fun updateTracks(tracks: MutableList<Track>, currentTrackPos: Int)
     fun setCurrentTrackByPos(position: Int)
+    fun setRandomTrackPos()
     fun getCurrentTrack(): Track?
-    fun getRandomTrackPosition(): Int
     fun getResumePosition(): Int
     fun getCurrentPosition(): Int
 
@@ -23,6 +23,11 @@ interface IPlayerHolder {
     fun seek(position: Int)
     fun playPrev()
     fun playNext()
+
+    fun changeShuffleState()
+    fun getShuffleState(): Boolean
+    fun changeRepeatState()
+    fun getRepeatState(): Int
 
     fun setPlaybackListener(playbackListener: PlaybackListener)
 

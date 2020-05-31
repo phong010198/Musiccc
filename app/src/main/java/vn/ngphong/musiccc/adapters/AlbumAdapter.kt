@@ -1,7 +1,6 @@
 package vn.ngphong.musiccc.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_album.view.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Album
+import vn.ngphong.musiccc.utils.Tool
 
 class AlbumAdapter(listAlbums: MutableList<Album>) :
     RecyclerView.Adapter<AlbumAdapter.AlbumHolder>() {
@@ -30,10 +30,43 @@ class AlbumAdapter(listAlbums: MutableList<Album>) :
             itemView.album_txt_name.text = album.name
             itemView.album_txt_countTracks.text =
                 "${album.tracks.size} track" + if (album.tracks.size > 1) "s" else " only"
-            if (BitmapFactory.decodeFile(album.tracks[0].albumArt) != null)
-                itemView.album_img_art.setImageBitmap(BitmapFactory.decodeFile(album.tracks[0].albumArt))
-            else
-                itemView.album_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+            if (album.tracks.size < 4) {
+                itemView.grid_album_art.visibility = View.GONE
+                itemView.album_img_art.visibility = View.VISIBLE
+                val art = Tool.getTrackPicture(album.tracks[0].data)
+                if (art != null) {
+                    itemView.album_img_art.setImageBitmap(art)
+                } else {
+                    itemView.album_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+                }
+            } else {
+                itemView.grid_album_art.visibility = View.VISIBLE
+                itemView.album_img_art.visibility = View.GONE
+                var art = Tool.getTrackPicture(album.tracks[0].data)
+                if (art != null) {
+                    itemView.album_img_art1.setImageBitmap(art)
+                } else {
+                    itemView.album_img_art1.setImageResource(R.mipmap.ic_launcher_foreground)
+                }
+                art = Tool.getTrackPicture(album.tracks[1].data)
+                if (art != null) {
+                    itemView.album_img_art2.setImageBitmap(art)
+                } else {
+                    itemView.album_img_art2.setImageResource(R.mipmap.ic_launcher_foreground)
+                }
+                art = Tool.getTrackPicture(album.tracks[2].data)
+                if (art != null) {
+                    itemView.album_img_art3.setImageBitmap(art)
+                } else {
+                    itemView.album_img_art3.setImageResource(R.mipmap.ic_launcher_foreground)
+                }
+                art = Tool.getTrackPicture(album.tracks[3].data)
+                if (art != null) {
+                    itemView.album_img_art4.setImageBitmap(art)
+                } else {
+                    itemView.album_img_art4.setImageResource(R.mipmap.ic_launcher_foreground)
+                }
+            }
         }
     }
 
