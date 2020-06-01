@@ -59,7 +59,7 @@ abstract class BaseFragment : Fragment() {
         serviceBound = true
     }
 
-    fun unbindSer() {
+    private fun unbindSer() {
         if (serviceBound) {
             requireActivity().unbindService(serviceConnection)
             serviceBound = false

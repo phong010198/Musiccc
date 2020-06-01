@@ -12,7 +12,7 @@ open class PermissionActivity : AppCompatActivity() {
     private val permissionRead = Manifest.permission.READ_EXTERNAL_STORAGE
     private val permissionForeground = Manifest.permission.FOREGROUND_SERVICE
     private var REQUEST_CODE_ASK_PERMISSIONS = 123
-    var permissionsGranted: Boolean = false
+    private var permissionsGranted: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -101,15 +101,23 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount == 1) {
-            supportFragmentManager.popBackStackImmediate()
-            main_content.visibility = View.VISIBLE
-            app_bar.visibility = View.VISIBLE
-        } else {
-            val intent = Intent()
-            intent.action = Intent.ACTION_MAIN
-            intent.addCategory(Intent.CATEGORY_HOME)
-            startActivity(intent)
+        when {
+            supportFragmentManager.findFragmentByTag("albumTracksFrag.tag") != null -> {
+                supportFragmentManager.popBackStack()
+                main_content.visibility = View.VISIBLE
+                app_bar.visibility = View.VISIBLE
+            }
+            supportFragmentManager.backStackEntryCount == 1 -> {
+                supportFragmentManager.popBackStackImmediate()
+                main_content.visibility = View.VISIBLE
+                app_bar.visibility = View.VISIBLE
+            }
+            else -> {
+                val intent = Intent()
+                intent.action = Intent.ACTION_MAIN
+                intent.addCategory(Intent.CATEGORY_HOME)
+                startActivity(intent)
+            }
         }
     }
 
@@ -129,10 +137,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     supportFragmentManager.beginTransaction().addToBackStack(playerTag)
                         .add(R.id.full_frame, playerFrag, playerTag).show(playerFrag).commit()
                 }
-                main_content.visibility = View.GONE
-                app_bar.visibility = View.GONE
+                hideView()
             }
         }
+    }
+
+    fun hideView() {
+        main_content.visibility = View.GONE
+        app_bar.visibility = View.GONE
     }
 
     private fun playPrev() {

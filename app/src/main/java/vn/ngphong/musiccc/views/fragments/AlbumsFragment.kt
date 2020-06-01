@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_albums.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.adapters.AlbumAdapter
@@ -51,7 +52,18 @@ class AlbumsFragment : BaseFragment() {
         recyclerAlbum.adapter = albumAdapter
         albumAdapter!!.setOnClickListener(object : AlbumAdapter.OnClickListener {
             override fun onAlbumClick(position: Int) {
-
+                val gson = Gson()
+                val gsonString = gson.toJson(listAlbums[position].tracks)
+                val albumTracksFrag = AlbumTracksFragment()
+                val bundle = Bundle()
+                bundle.putString("album.bundle", gsonString)
+                albumTracksFrag.arguments = bundle
+                val albumTracksTag = "albumTracksFrag.tag"
+                mainActivity!!.supportFragmentManager.beginTransaction()
+                    .replace(R.id.full_frame, albumTracksFrag, albumTracksTag)
+                    .addToBackStack(null)
+                    .commit()
+                mainActivity!!.hideView()
             }
         })
     }

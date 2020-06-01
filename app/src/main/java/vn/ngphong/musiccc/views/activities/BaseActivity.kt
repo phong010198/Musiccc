@@ -15,7 +15,7 @@ abstract class BaseActivity : PermissionActivity() {
     var notificationMusiccc: NotificationMusiccc? = null
     lateinit var playerIntent: Intent
 
-    var serviceBound = false
+    private var serviceBound = false
 
     private var serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {

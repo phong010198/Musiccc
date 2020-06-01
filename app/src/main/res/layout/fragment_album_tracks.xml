@@ -18,7 +18,8 @@
             android:layout_height="50dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@mipmap/ic_launcher_foreground" />
+            android:src="@mipmap/ic_launcher_foreground"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="0dp"
@@ -27,6 +28,7 @@
             android:ellipsize="marquee"
             android:fontFamily="sans-serif"
             android:singleLine="true"
+            android:id="@+id/album_tracks_txt_name"
             android:text="@string/tab_album"
             android:textColor="@android:color/black"
             android:textSize="@dimen/txt_album_title"
@@ -38,7 +40,8 @@
             android:layout_height="50dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@mipmap/ic_play_foreground" />
+            android:src="@mipmap/ic_play_foreground"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

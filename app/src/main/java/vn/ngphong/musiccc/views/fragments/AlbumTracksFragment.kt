@@ -6,60 +6,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.fragment_album_tracks.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.adapters.TrackAdapter
 import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.services.IPlayerHolder
-import vn.ngphong.musiccc.services.MusicService
-import vn.ngphong.musiccc.services.NotificationMusiccc
-import vn.ngphong.musiccc.utils.PlaybackListener
-import vn.ngphong.musiccc.views.activities.MainActivity
+import java.lang.reflect.Type
 
-class AlbumTracksFragment : Fragment() {
-    var musicService: MusicService? = null
-    var iPlayerHolder: IPlayerHolder? = null
-    var notificationMusiccc: NotificationMusiccc? = null
-    var mPlaybackListener: MyPlaybackListener? = null
-    var mainActivity: MainActivity? = null
-
+class AlbumTracksFragment : BaseFragment() {
+    private var listTracksString: String? = null
     private var listAlbumTracks = mutableListOf<Track>()
     private var albumTracksAdapter: TrackAdapter? = null
     private lateinit var recyclerAlbumTracks: RecyclerView
 
-    inner class MyPlaybackListener : PlaybackListener() {
-        override fun onStateChanged(state: Int) {
-            if (iPlayerHolder?.getState() == State.PLAYING) {
-                mainActivity!!.updateFooter()
-            }
-        }
+    override fun onServiceConnected() {
+
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getService()
-        mainActivity = activity as MainActivity
-    }
-
-    private fun getService() {
-        val mainActivity = activity as MainActivity
-        musicService = mainActivity.getService()
-        if (musicService != null) {
-            iPlayerHolder = musicService!!.playerHolder
-            notificationMusiccc = musicService!!.notificationMusiccc
-        }
-        if (mPlaybackListener == null) {
-            mPlaybackListener = MyPlaybackListener()
-            iPlayerHolder?.setPlaybackListener(mPlaybackListener!!)
-        }
+        binSer()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_album_tracks, container, false)
+        listTracksString = arguments?.getString("album.bundle")
+        stringToList()
         val manager = LinearLayoutManager(requireContext())
         recyclerAlbumTracks = rootView.findViewById(R.id.recycler_album_tracks)
         recyclerAlbumTracks.layoutManager = manager
@@ -67,8 +44,20 @@ class AlbumTracksFragment : Fragment() {
         return rootView
     }
 
+    private fun stringToList() {
+        if (listTracksString != null) {
+            val gson = Gson()
+            val type: Type = object : TypeToken<MutableList<Track>>() {}.type
+            val tracks = gson.fromJson<MutableList<Track>>(listTracksString, type)
+            if (tracks != null && tracks.isNotEmpty()) {
+                listAlbumTracks = tracks
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        album_tracks_txt_name.text = listAlbumTracks[0].album
         recyclerAlbumTracks.adapter = albumTracksAdapter
         albumTracksAdapter!!.setOnClickListener(object : TrackAdapter.OnClickListener {
             override fun onTrackClick(position: Int) {
@@ -86,5 +75,10 @@ class AlbumTracksFragment : Fragment() {
                     .show()
             }
         })
+        album_img_play.setOnClickListener {
+            iPlayerHolder!!.updateTracks(listAlbumTracks, 0)
+            iPlayerHolder!!.play()
+            mainActivity!!.updateFooter()
+        }
     }
 }
