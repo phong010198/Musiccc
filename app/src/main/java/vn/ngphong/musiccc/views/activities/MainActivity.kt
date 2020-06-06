@@ -1,5 +1,6 @@
 package vn.ngphong.musiccc.views.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -19,6 +20,10 @@ import kotlin.system.exitProcess
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
+    companion object {
+        fun getStartIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
+    }
+
     private var firstPlay = true
     private var mPlaybackListener: MyPlaybackListener? = null
     private var musicPreference: MusicPreference? = null

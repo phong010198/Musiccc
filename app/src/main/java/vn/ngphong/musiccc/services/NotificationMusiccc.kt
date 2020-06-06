@@ -61,12 +61,11 @@ class NotificationMusiccc internal constructor(private val mMusicService: MusicS
         val track = mMusicService.playerHolder?.getCurrentTrack()
         updateMetaData(track!!)
         val intent = Intent(context, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                Intent.FLAG_ACTIVITY_NEW_TASK
-        val pIntent = PendingIntent.getActivity(context, 0, intent, 0)
-
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        val pIntent = PendingIntent.getActivity(
+            context,
+            System.currentTimeMillis().toInt(), intent, 0
+        )
         var art = Tool.getTrackPicture(track.data)
         if (art == null) {
             art = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_foreground)
@@ -76,7 +75,7 @@ class NotificationMusiccc internal constructor(private val mMusicService: MusicS
 
         @Suppress("DEPRECATION")
         return NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_noti)
             .setLargeIcon(art)
             .setShowWhen(false)
             .setColor(context.resources.getColor(R.color.colorPrimary))

@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import androidx.appcompat.app.AppCompatActivity
 import vn.ngphong.musiccc.services.IPlayerHolder
 import vn.ngphong.musiccc.services.MusicService
 import vn.ngphong.musiccc.services.NotificationMusiccc
 
-abstract class BaseActivity : PermissionActivity() {
+abstract class BaseActivity : AppCompatActivity() {
     var musicService: MusicService? = null
     var iPlayerHolder: IPlayerHolder? = null
     var notificationMusiccc: NotificationMusiccc? = null
