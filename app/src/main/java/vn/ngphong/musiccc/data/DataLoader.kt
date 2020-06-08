@@ -1,11 +1,13 @@
 package vn.ngphong.musiccc.data
 
+import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import vn.ngphong.musiccc.models.Album
 import vn.ngphong.musiccc.models.Artist
+import vn.ngphong.musiccc.models.Playlist
 import vn.ngphong.musiccc.models.Track
 
 class DataLoader(val context: Context) {
@@ -90,7 +92,24 @@ class DataLoader(val context: Context) {
         return albums
     }
 
+    fun genPlaylist(): MutableList<Playlist> {
+        val playlist = mutableListOf<Playlist>()
+        val tracks = queryTracks()
+        val playlistTracks = mutableListOf<Track>()
+        playlistTracks.add(tracks[1])
+        playlistTracks.add(tracks[3])
+        playlistTracks.add(tracks[5])
+        playlistTracks.add(tracks[6])
+        playlistTracks.add(tracks[7])
+        val playlist0 = Playlist("Create a new playlist", mutableListOf())
+        val playlist1 = Playlist("Like", playlistTracks)
+        playlist.add(playlist0)
+        playlist.add(playlist1)
+        return playlist
+    }
 
+    @Suppress("DEPRECATION")
+    @SuppressLint("InlinedApi", "Recycle")
     private fun queryTrack(): TrackCursorWrapper? {
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(

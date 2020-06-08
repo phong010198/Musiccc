@@ -73,6 +73,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             addTab(this.newTab().setText("Tracks"))
             addTab(this.newTab().setText("Artists"))
             addTab(this.newTab().setText("Albums"))
+            addTab(this.newTab().setText("Playlists"))
             this.tabGravity = TabLayout.GRAVITY_FILL
         }
         sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
