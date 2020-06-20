@@ -9,9 +9,10 @@ import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Track
 import vn.ngphong.musiccc.utils.Tool
 
-class TrackAdapter(listTrack: MutableList<Track>?) :
+class TrackAdapter(listTrack: MutableList<Track>?, isTracksFrag: Boolean) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
     private var tracks: MutableList<Track>? = null
+    private var isTracksFrag = false
     private var mListener: OnClickListener? = null
     fun setOnClickListener(listener: OnClickListener) {
         mListener = listener
@@ -19,11 +20,15 @@ class TrackAdapter(listTrack: MutableList<Track>?) :
 
     init {
         tracks = listTrack
+        this.isTracksFrag = isTracksFrag
         notifyDataSetChanged()
     }
 
     inner class TrackHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(track: Track) {
+            if (!isTracksFrag) {
+                itemView.track_btn_menu.visibility = View.GONE
+            }
             itemView.track_tv_title.text = track.title
             itemView.track_tv_artist.text = track.artist
             itemView.track_tv_duration.text = Tool.formatTime(track.duration)

@@ -89,6 +89,9 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
         holder.itemView.setOnClickListener {
             mListener?.onPlaylistClick(position)
         }
+        holder.itemView.playlist_img_play.setOnClickListener {
+            mListener?.onPlayImgClick(position)
+        }
     }
 
     fun updateData(listPlaylists: MutableList<Playlist>) {
@@ -98,5 +101,6 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
 
     interface OnClickListener {
         fun onPlaylistClick(position: Int)
+        fun onPlayImgClick(position: Int)
     }
 }

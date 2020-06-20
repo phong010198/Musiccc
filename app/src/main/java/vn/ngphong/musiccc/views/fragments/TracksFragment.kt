@@ -44,7 +44,7 @@ class TracksFragment : BaseFragment() {
         val manager = LinearLayoutManager(requireContext())
         recyclerTracks = rootView.findViewById(R.id.recycler_tracks)
         recyclerTracks.layoutManager = manager
-        trackAdapter = TrackAdapter(listTracks)
+        trackAdapter = TrackAdapter(listTracks, true)
         return rootView
     }
 

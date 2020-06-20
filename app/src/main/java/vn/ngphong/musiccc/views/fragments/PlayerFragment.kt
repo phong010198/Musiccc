@@ -2,6 +2,7 @@ package vn.ngphong.musiccc.views.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +24,10 @@ class PlayerFragment : Fragment() {
     var musicService: MusicService? = null
     var iPlayerHolder: IPlayerHolder? = null
     var notificationMusiccc: NotificationMusiccc? = null
-    var mPlaybackListener: MyPlaybackListener? = null
+    private var mPlaybackListener: MyPlaybackListener? = null
     var mainActivity: MainActivity? = null
+    var runnable: Runnable? = null
+    var handler = Handler()
 
     lateinit var seekBar: SeekBar
     lateinit var tvPlayerTitle: TextView
@@ -37,7 +40,7 @@ class PlayerFragment : Fragment() {
     lateinit var imgRepeat: ImageView
     var isSeeking = false
 
-    inner class MyPlaybackListener : PlaybackListener() {
+    internal inner class MyPlaybackListener : PlaybackListener() {
         override fun onPositionChanged(position: Int) {
             if (!isSeeking) {
                 seekBar.progress = position

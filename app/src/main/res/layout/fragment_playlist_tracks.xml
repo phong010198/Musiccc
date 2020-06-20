@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".views.fragments.AlbumTracksFragment">
+    tools:context=".views.fragments.PlaylistTracksFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,14 +13,16 @@
         android:padding="@dimen/padding_small">
 
         <ImageView
-            android:id="@+id/album_img_back"
+            android:id="@+id/playlist_img_add"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher_foreground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@android:drawable/ic_menu_add"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/album_tracks_txt_name"
+            android:id="@+id/playlist_tracks_txt_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +35,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/album_img_play"
+            android:id="@+id/playlist_tracks_img_play"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:clickable="true"
@@ -43,7 +45,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_album_tracks"
+        android:id="@+id/recycler_playlist_tracks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_large"

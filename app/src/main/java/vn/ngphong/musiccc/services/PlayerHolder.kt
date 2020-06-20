@@ -18,6 +18,7 @@ import vn.ngphong.musiccc.utils.PlaybackListener
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
 
 class PlayerHolder internal constructor(private val mMusicService: MusicService?) :
     MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -94,6 +95,9 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
                 }
             }
         }
+        scheduledExecutorService!!.scheduleAtFixedRate(
+            seekBarTask, 0, 1000, TimeUnit.MILLISECONDS
+        )
     }
 
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {

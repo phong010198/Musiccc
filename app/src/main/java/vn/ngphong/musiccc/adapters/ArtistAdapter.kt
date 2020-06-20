@@ -26,7 +26,7 @@ class ArtistAdapter(listArtists: MutableList<Artist>) :
     inner class ArtistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(artist: Artist, parentPosition: Int) {
             itemView.artists_tv_name.text = artist.name
-            val artistTrackAdapter = TrackAdapter(artist.tracks)
+            val artistTrackAdapter = TrackAdapter(artist.tracks, true)
             artistTrackAdapter.setOnClickListener(object : TrackAdapter.OnClickListener {
                 override fun onTrackClick(position: Int) {
                     mListener?.onItemTrackClick(position, parentPosition)

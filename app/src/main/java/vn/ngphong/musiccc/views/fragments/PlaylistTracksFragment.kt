@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_album_tracks.*
+import kotlinx.android.synthetic.main.fragment_playlist_tracks.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.adapters.TrackAdapter
 import vn.ngphong.musiccc.models.Track
 import java.lang.reflect.Type
 
-class AlbumTracksFragment : BaseFragment() {
+class PlaylistTracksFragment : BaseFragment() {
     private var listTracksString: String? = null
-    private var listAlbumTracks = mutableListOf<Track>()
-    private var albumTracksAdapter: TrackAdapter? = null
-    private lateinit var recyclerAlbumTracks: RecyclerView
+    private var listPlaylistTracks = mutableListOf<Track>()
+    private var playlistTracksAdapter: TrackAdapter? = null
+    private lateinit var recyclerPlaylistTracks: RecyclerView
 
     override fun onServiceConnected() {
 
@@ -34,13 +34,13 @@ class AlbumTracksFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_album_tracks, container, false)
-        listTracksString = arguments?.getString("album.bundle")
+        val rootView = inflater.inflate(R.layout.fragment_playlist_tracks, container, false)
+        listTracksString = arguments?.getString("playlist.bundle")
         stringToList()
         val manager = LinearLayoutManager(requireContext())
-        recyclerAlbumTracks = rootView.findViewById(R.id.recycler_album_tracks)
-        recyclerAlbumTracks.layoutManager = manager
-        albumTracksAdapter = TrackAdapter(listAlbumTracks, true)
+        recyclerPlaylistTracks = rootView.findViewById(R.id.recycler_playlist_tracks)
+        recyclerPlaylistTracks.layoutManager = manager
+        playlistTracksAdapter = TrackAdapter(listPlaylistTracks, false)
         return rootView
     }
 
@@ -50,35 +50,37 @@ class AlbumTracksFragment : BaseFragment() {
             val type: Type = object : TypeToken<MutableList<Track>>() {}.type
             val tracks = gson.fromJson<MutableList<Track>>(listTracksString, type)
             if (tracks != null && tracks.isNotEmpty()) {
-                listAlbumTracks = tracks
+                listPlaylistTracks = tracks
             }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        album_tracks_txt_name.text = listAlbumTracks[0].album
-        recyclerAlbumTracks.adapter = albumTracksAdapter
-        albumTracksAdapter!!.setOnClickListener(object : TrackAdapter.OnClickListener {
+        recyclerPlaylistTracks.adapter = playlistTracksAdapter
+        playlistTracksAdapter!!.setOnClickListener(object : TrackAdapter.OnClickListener {
             override fun onTrackClick(position: Int) {
-                iPlayerHolder!!.updateTracks(listAlbumTracks, position)
+                iPlayerHolder!!.updateTracks(listPlaylistTracks, position)
                 iPlayerHolder!!.play()
                 mainActivity!!.updateFooter()
             }
 
             override fun onPlusMenuClick(position: Int) {
-                Toast.makeText(
-                    this@AlbumTracksFragment.context,
-                    "OK$position",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+
             }
         })
-        album_img_play.setOnClickListener {
-            iPlayerHolder!!.updateTracks(listAlbumTracks, 0)
+        playlist_tracks_img_play.setOnClickListener {
+            iPlayerHolder!!.updateTracks(listPlaylistTracks, 0)
             iPlayerHolder!!.play()
             mainActivity!!.updateFooter()
+        }
+        playlist_img_add.setOnClickListener {
+            Toast.makeText(
+                this@PlaylistTracksFragment.context,
+                "Add",
+                Toast.LENGTH_SHORT
+            )
+                .show()
         }
     }
 }
