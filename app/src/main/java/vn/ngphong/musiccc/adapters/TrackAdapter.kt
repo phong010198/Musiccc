@@ -9,10 +9,10 @@ import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Track
 import vn.ngphong.musiccc.utils.Tool
 
-class TrackAdapter(listTrack: MutableList<Track>?, isTracksFrag: Boolean) :
+class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
     private var tracks: MutableList<Track>? = null
-    private var isTracksFrag = false
+    private var showPlusButton = false
     private var mListener: OnClickListener? = null
     fun setOnClickListener(listener: OnClickListener) {
         mListener = listener
@@ -20,13 +20,13 @@ class TrackAdapter(listTrack: MutableList<Track>?, isTracksFrag: Boolean) :
 
     init {
         tracks = listTrack
-        this.isTracksFrag = isTracksFrag
+        this.showPlusButton = showPlusButton
         notifyDataSetChanged()
     }
 
     inner class TrackHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(track: Track) {
-            if (!isTracksFrag) {
+            if (!showPlusButton) {
                 itemView.track_btn_menu.visibility = View.GONE
             }
             itemView.track_tv_title.text = track.title
@@ -63,9 +63,21 @@ class TrackAdapter(listTrack: MutableList<Track>?, isTracksFrag: Boolean) :
         }
     }
 
-    fun updateData(listTracks: MutableList<Track>) {
-        tracks = listTracks
+    fun updateData(tracks: MutableList<Track>) {
+        this.tracks = tracks
         notifyDataSetChanged()
+    }
+
+    fun addTrack(track: Track) {
+        tracks!!.add(track)
+        tracks!!.sortBy { it.title }
+        notifyDataSetChanged()
+    }
+
+    fun removeTrack(position: Int) {
+        tracks!!.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, tracks!!.size)
     }
 
     interface OnClickListener {

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".views.fragments.AlbumsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -20,6 +19,5 @@
         android:gravity="center"
         android:text="@string/empty_tracks"
         android:textColor="@color/grey_text"
-        android:textSize="18sp"
-        android:visibility="visible" />
+        android:textSize="18sp" />
 </FrameLayout>

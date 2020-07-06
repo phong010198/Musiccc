@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import vn.ngphong.musiccc.views.fragments.AlbumsFragment
 import vn.ngphong.musiccc.views.fragments.ArtistsFragment
-import vn.ngphong.musiccc.views.fragments.PlaylistFragment
+import vn.ngphong.musiccc.views.fragments.PlaylistsFragment
 import vn.ngphong.musiccc.views.fragments.TracksFragment
 
 @Suppress("DEPRECATION")
@@ -14,7 +14,7 @@ class SectionsPagerAdapter(fm: FragmentManager) :
     private val tracksFrag = TracksFragment()
     private val artistsFrag = ArtistsFragment()
     private val albumsFrag = AlbumsFragment()
-    private val playlistFrag = PlaylistFragment()
+    private val playlistFrag = PlaylistsFragment()
     private val mFragmentList: ArrayList<Fragment> =
         arrayListOf(tracksFrag, artistsFrag, albumsFrag, playlistFrag)
 

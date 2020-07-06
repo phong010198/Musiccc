@@ -91,7 +91,7 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
         if (seekBarTask == null) {
             seekBarTask = Runnable {
                 if (isPlayerExist() && mediaPlayer!!.isPlaying && playbackListener != null) {
-                    playbackListener!!.onPositionChanged(getCurrentPosition())
+                    playbackListener!!.onPositionChanged(getCurrentPosition()!!)
                 }
             }
         }
@@ -177,7 +177,8 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
 
     override fun getCurrentTrack(): Track? {
         musicPreference.currentTrackPos = currentTrackPos
-        musicPreference.currentTrackBookmark = getCurrentPosition()
+        musicPreference.currentTrackBookmark =
+            if (getCurrentPosition() != null) getCurrentPosition()!! else 0
         return tracks?.get(currentTrackPos)
     }
 
@@ -185,8 +186,8 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
         return resumePosition
     }
 
-    override fun getCurrentPosition(): Int {
-        return mediaPlayer!!.currentPosition
+    override fun getCurrentPosition(): Int? {
+        return mediaPlayer?.currentPosition
     }
 
     override fun play() {

@@ -69,7 +69,7 @@ class AlbumTracksFragment : BaseFragment() {
             override fun onPlusMenuClick(position: Int) {
                 Toast.makeText(
                     this@AlbumTracksFragment.context,
-                    "OK$position",
+                    "Track position: $position",
                     Toast.LENGTH_SHORT
                 )
                     .show()

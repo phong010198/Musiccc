@@ -2,7 +2,7 @@ package vn.ngphong.musiccc.views.activities
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.content.pm.ResolveInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -16,6 +16,7 @@ import vn.ngphong.musiccc.utils.MusicPreference
 import vn.ngphong.musiccc.utils.PlaybackListener
 import vn.ngphong.musiccc.utils.Tool
 import vn.ngphong.musiccc.views.fragments.PlayerFragment
+import java.util.*
 import kotlin.system.exitProcess
 
 
@@ -63,8 +64,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         footer_img_playPause.setOnClickListener(this)
         footer_img_next.setOnClickListener(this)
         frame_footer.setOnClickListener(this)
-        close.setColorFilter(Color.WHITE)
         close.setOnClickListener(this)
+        send_mail.setOnClickListener(this)
         musicPreference = MusicPreference(this)
     }
 
@@ -113,6 +114,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 main_content.visibility = View.VISIBLE
                 app_bar.visibility = View.VISIBLE
             }
+            supportFragmentManager.findFragmentByTag("playlistTracksFrag.tag") != null -> {
+                supportFragmentManager.popBackStack()
+                main_content.visibility = View.VISIBLE
+                app_bar.visibility = View.VISIBLE
+            }
             supportFragmentManager.backStackEntryCount == 1 -> {
                 supportFragmentManager.popBackStackImmediate()
                 main_content.visibility = View.VISIBLE
@@ -135,6 +141,25 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.close -> {
                 finish()
                 exitProcess(0)
+            }
+            R.id.send_mail -> {
+                val emailIntent = Intent(Intent.ACTION_SEND)
+                val aEmailList = arrayOf("phong010198@gmail.com", "16021832@vnu.edu.vn")
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, aEmailList)
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Gop y Musiccc")
+                emailIntent.type = "text/plain"
+                val pm = packageManager
+                val matches =
+                    pm.queryIntentActivities(intent, 0)
+                var best: ResolveInfo? = null
+                for (info in matches) if (info.activityInfo.packageName.endsWith(".gm") ||
+                    info.activityInfo.name.toLowerCase(Locale.ROOT).contains("gmail")
+                ) best = info
+                if (best != null) intent.setClassName(
+                    best.activityInfo.packageName,
+                    best.activityInfo.name
+                )
+                startActivity(emailIntent)
             }
             R.id.frame_footer -> if (!firstPlay) {
                 val playerTag = playerFrag.tag

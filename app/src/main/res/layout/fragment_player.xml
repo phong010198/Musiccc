@@ -5,6 +5,7 @@
     android:id="@+id/layout_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     android:fontFamily="sans-serif"
     android:orientation="vertical"
     android:padding="@dimen/padding_normal"
@@ -32,6 +33,7 @@
         android:layout_marginLeft="@dimen/margin_xlarge"
         android:layout_marginRight="@dimen/margin_xlarge"
         android:text="@string/app_name"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/txt_large" />
 
     <TextView
@@ -39,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="@color/colorAccent"
         android:layout_marginLeft="@dimen/margin_xlarge"
         android:layout_marginRight="@dimen/margin_xlarge"
         android:text="@string/app_name"
@@ -61,6 +64,7 @@
             android:layout_alignParentLeft="true"
             android:layout_margin="@dimen/margin_small"
             android:gravity="center"
+            android:textColor="@color/colorAccent"
             android:singleLine="true"
             android:text="@string/default_time"
             android:textSize="@dimen/txt_small"
@@ -77,6 +81,7 @@
         <TextView
             android:id="@+id/player_tv_duration"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorAccent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/player_seekBar"
             android:layout_alignParentEnd="true"

@@ -66,7 +66,7 @@ class ArtistsFragment : BaseFragment() {
             override fun onItemPlusMenuClick(position: Int, parentPosition: Int) {
                 Toast.makeText(
                     this@ArtistsFragment.context,
-                    "Item$position of Parent$parentPosition",
+                    "Item $position of Parent $parentPosition",
                     Toast.LENGTH_SHORT
                 )
                     .show()

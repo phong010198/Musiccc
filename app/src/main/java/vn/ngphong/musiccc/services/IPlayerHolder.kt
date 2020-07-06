@@ -14,7 +14,7 @@ interface IPlayerHolder {
     fun setRandomTrackPos()
     fun getCurrentTrack(): Track?
     fun getResumePosition(): Int
-    fun getCurrentPosition(): Int
+    fun getCurrentPosition(): Int?
 
     fun play()
     fun pause()

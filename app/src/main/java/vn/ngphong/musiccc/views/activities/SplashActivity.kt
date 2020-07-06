@@ -2,10 +2,12 @@ package vn.ngphong.musiccc.views.activities
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -51,8 +53,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun openMainActivity() {
-        startActivity(MainActivity.getStartIntent(this))
-        finish()
+        Handler().postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }, 2000)
     }
 
     private fun requestPermissions() {
@@ -60,9 +64,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode == CODE_PERMISSION && isPermissionsGranted(this)) {

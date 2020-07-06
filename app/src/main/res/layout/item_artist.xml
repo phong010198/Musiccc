@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/color_background_item">
@@ -18,7 +19,8 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_micro_foreground" />
+                android:src="@mipmap/ic_artist_foreground"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/artists_tv_name"
@@ -31,7 +33,7 @@
                 android:fontFamily="sans-serif"
                 android:maxLines="1"
                 android:text="@string/app_name"
-                android:textColor="@color/grey_text"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/txt_xlarge"
                 android:textStyle="bold" />
 
@@ -41,7 +43,8 @@
                 android:layout_height="50dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@mipmap/ic_play_foreground" />
+                android:src="@mipmap/ic_play_foreground"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

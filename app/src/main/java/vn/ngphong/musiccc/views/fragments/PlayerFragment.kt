@@ -86,7 +86,7 @@ class PlayerFragment : Fragment() {
         seekBar.progress = 0
         seekBar.max = track.duration.toInt()
         if (iPlayerHolder!!.isPlayerExist()) {
-            seekBar.progress = iPlayerHolder!!.getCurrentPosition()
+            seekBar.progress = iPlayerHolder!!.getCurrentPosition()!!
         }
         tvPlayerTitle.text = track.title
         tvPlayerArtist.text = track.artist

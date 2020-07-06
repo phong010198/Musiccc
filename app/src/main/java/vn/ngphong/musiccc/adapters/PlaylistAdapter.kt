@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_playlist.view.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Playlist
+import vn.ngphong.musiccc.models.Track
 import vn.ngphong.musiccc.utils.Tool
 
 class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
@@ -96,6 +97,11 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
 
     fun updateData(listPlaylists: MutableList<Playlist>) {
         playlists = listPlaylists
+        notifyDataSetChanged()
+    }
+
+    fun updateNewList(position: Int, newPlaylistTracks: MutableList<Track>) {
+        playlists[position].tracks = newPlaylistTracks
         notifyDataSetChanged()
     }
 
