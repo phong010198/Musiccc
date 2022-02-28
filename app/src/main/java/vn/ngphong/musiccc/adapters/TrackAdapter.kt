@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_track.view.*
 import vn.ngphong.musiccc.R
-import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.utils.Tool
+import vn.ngphong.musiccc.data.models.Song
+import vn.ngphong.musiccc.util.Tool
 
-class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
+class TrackAdapter(listSong: MutableList<Song>?, showPlusButton: Boolean) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
-    private var tracks: MutableList<Track>? = null
+    private var songs: MutableList<Song>? = null
     private var showPlusButton = false
     private var mListener: OnClickListener? = null
     fun setOnClickListener(listener: OnClickListener) {
@@ -19,20 +19,20 @@ class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
     }
 
     init {
-        tracks = listTrack
+        songs = listSong
         this.showPlusButton = showPlusButton
         notifyDataSetChanged()
     }
 
     inner class TrackHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindData(track: Track) {
+        fun bindData(song: Song) {
             if (!showPlusButton) {
                 itemView.track_btn_menu.visibility = View.GONE
             }
-            itemView.track_tv_title.text = track.title
-            itemView.track_tv_artist.text = track.artist
-            itemView.track_tv_duration.text = Tool.formatTime(track.duration)
-            val art = Tool.getTrackPicture(track.data)
+            itemView.track_tv_title.text = song.title
+            itemView.track_tv_artist.text = song.artist
+            itemView.track_tv_duration.text = Tool.formatTime(song.duration)
+            val art = Tool.getTrackPicture(song.data)
             if (art != null) {
                 itemView.track_img_art.setImageBitmap(art)
             } else {
@@ -49,11 +49,11 @@ class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
     }
 
     override fun getItemCount(): Int {
-        return tracks?.size ?: 0
+        return songs?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
-        val track = tracks?.get(position)
+        val track = songs?.get(position)
         track.let { holder.bindData(it!!) }
         holder.itemView.setOnClickListener {
             mListener?.onTrackClick(position)
@@ -63,21 +63,21 @@ class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
         }
     }
 
-    fun updateData(tracks: MutableList<Track>) {
-        this.tracks = tracks
+    fun updateData(songs: MutableList<Song>) {
+        this.songs = songs
         notifyDataSetChanged()
     }
 
-    fun addTrack(track: Track) {
-        tracks!!.add(track)
-        tracks!!.sortBy { it.title }
+    fun addTrack(song: Song) {
+        songs!!.add(song)
+        songs!!.sortBy { it.title }
         notifyDataSetChanged()
     }
 
     fun removeTrack(position: Int) {
-        tracks!!.removeAt(position)
+        songs!!.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, tracks!!.size)
+        notifyItemRangeChanged(position, songs!!.size)
     }
 
     interface OnClickListener {

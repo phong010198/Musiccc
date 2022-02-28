@@ -12,9 +12,9 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
-import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.utils.MusicPreference
-import vn.ngphong.musiccc.utils.PlaybackListener
+import vn.ngphong.musiccc.data.models.Song
+import vn.ngphong.musiccc.util.MusicPreference
+import vn.ngphong.musiccc.util.PlaybackListener
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -42,18 +42,14 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
     private var context = mMusicService!!.applicationContext
     private var mediaPlayer: MediaPlayer? = null
     private var playbackListener: PlaybackListener? = null
-    private var audioManager: AudioManager
+    private var audioManager: AudioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
     private var notificationMusiccc: NotificationMusiccc? = null
     private var notiReceiver: NotiReceiver? = null
     private var scheduledExecutorService: ScheduledExecutorService? = null
     private var seekBarTask: Runnable? = null
 
-    init {
-        audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
-    }
-
     private val musicPreference = MusicPreference(context)
-    private var tracks: MutableList<Track>? = null
+    private var songs: MutableList<Song>? = null
     private var currentTrackPos = 0
     private var resumePosition = 0
     private var repeatState = 0
@@ -111,7 +107,7 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
             playbackListener!!.onPlaybackCompleted()
         }
         when (repeatState) {
-            0 -> if (currentTrackPos == tracks!!.size - 1) {
+            0 -> if (currentTrackPos == songs!!.size - 1) {
                 currentTrackPos = 0
                 resumePosition = 0
                 play()
@@ -159,8 +155,8 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
         }
     }
 
-    override fun updateTracks(tracks: MutableList<Track>, currentTrackPos: Int) {
-        this.tracks = tracks
+    override fun updateTracks(songs: MutableList<Song>, currentTrackPos: Int) {
+        this.songs = songs
         this.currentTrackPos = currentTrackPos
     }
 
@@ -170,16 +166,16 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
 
     override fun setRandomTrackPos() {
         val r = Random()
-        currentTrackPos = if (tracks.isNullOrEmpty()) {
+        currentTrackPos = if (songs.isNullOrEmpty()) {
             0
-        } else r.nextInt(tracks!!.size)
+        } else r.nextInt(songs!!.size)
     }
 
-    override fun getCurrentTrack(): Track? {
+    override fun getCurrentTrack(): Song? {
         musicPreference.currentTrackPos = currentTrackPos
         musicPreference.currentTrackBookmark =
             if (getCurrentPosition() != null) getCurrentPosition()!! else 0
-        return tracks?.get(currentTrackPos)
+        return songs?.get(currentTrackPos)
     }
 
     override fun getResumePosition(): Int {
@@ -195,7 +191,7 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
             initPlayer()
             takeAudioFocus()
             mediaPlayer!!.reset()
-            mediaPlayer!!.setDataSource(tracks!![currentTrackPos].data)
+            mediaPlayer!!.setDataSource(songs!![currentTrackPos].data)
             mediaPlayer!!.prepareAsync()
         }
         toForeground()
@@ -228,7 +224,7 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
     override fun playPrev() {
         when {
             isShuffle -> setRandomTrackPos()
-            currentTrackPos == 0 -> currentTrackPos = tracks!!.size - 1
+            currentTrackPos == 0 -> currentTrackPos = songs!!.size - 1
             else -> currentTrackPos--
         }
         play()
@@ -237,7 +233,7 @@ class PlayerHolder internal constructor(private val mMusicService: MusicService?
     override fun playNext() {
         when {
             isShuffle -> setRandomTrackPos()
-            currentTrackPos == tracks!!.size - 1 -> currentTrackPos = 0
+            currentTrackPos == songs!!.size - 1 -> currentTrackPos = 0
             else -> currentTrackPos++
         }
         play()

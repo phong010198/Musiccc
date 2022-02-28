@@ -3,30 +3,33 @@
     <dimen name="divider_line">1px</dimen>
     <dimen name="divider_small">2dp</dimen>
 
-    <dimen name="padding_small">4dp</dimen>
-    <dimen name="padding_normal">8dp</dimen>
-    <dimen name="padding_large">16dp</dimen>
-    <dimen name="padding_xlarge">24dp</dimen>
+    <dimen name="padding_small">@dimen/_4sdp</dimen>
+    <dimen name="padding_normal">@dimen/_8sdp</dimen>
+    <dimen name="padding_large">@dimen/_16sdp</dimen>
+    <dimen name="padding_xlarge">@dimen/_24sdp</dimen>
 
-    <dimen name="margin_small">4dp</dimen>
-    <dimen name="margin_normal">8dp</dimen>
-    <dimen name="margin_large">16dp</dimen>
-    <dimen name="margin_xlarge">24dp</dimen>
+    <dimen name="margin_small">@dimen/_4sdp</dimen>
+    <dimen name="margin_normal">@dimen/_8sdp</dimen>
+    <dimen name="margin_large">@dimen/_16sdp</dimen>
+    <dimen name="margin_xlarge">@dimen/_24sdp</dimen>
 
     <dimen name="txt_small">12sp</dimen>
     <dimen name="txt_normal">14sp</dimen>
     <dimen name="txt_large">18sp</dimen>
     <dimen name="txt_xlarge">22sp</dimen>
-    <dimen name="txt_album_title">35sp</dimen>
+    <dimen name="txt_album_title">36sp</dimen>
 
-    <dimen name="footer_iconSize">40dp</dimen>
-    <dimen name="noti_iconSize">40dp</dimen>
+    <dimen name="footer_iconSize">@dimen/_40sdp</dimen>
+    <dimen name="noti_iconSize">@dimen/_40sdp</dimen>
 
-    <dimen name="playPause_iconSize">65dp</dimen>
-    <dimen name="prevNext_iconSize">55dp</dimen>
+    <dimen name="playPause_iconSize">@dimen/_65sdp</dimen>
+    <dimen name="prevNext_iconSize">@dimen/_55sdp</dimen>
 
-    <dimen name="player_albumSize">200dp</dimen>
-    <dimen name="player_seekBar_marginTop">16dp</dimen>
-    <dimen name="player_controls_marginTop">10dp</dimen>
-    <dimen name="player_controls_marginBottom">10dp</dimen>
+    <dimen name="player_albumSize">@dimen/_200sdp</dimen>
+    <dimen name="player_seekBar_marginTop">@dimen/_16sdp</dimen>
+    <dimen name="player_controls_marginTop">@dimen/_10sdp</dimen>
+    <dimen name="player_controls_marginBottom">@dimen/_10sdp</dimen>
+
+    <dimen name="item_album_img_small">@dimen/_55sdp</dimen>
+    <dimen name="item_album_img_big">@dimen/_110sdp</dimen>
 </resources>

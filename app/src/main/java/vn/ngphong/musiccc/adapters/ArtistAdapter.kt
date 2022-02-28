@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_artist.view.*
 import vn.ngphong.musiccc.R
-import vn.ngphong.musiccc.models.Artist
+import vn.ngphong.musiccc.data.models.Artist
 
 class ArtistAdapter(listArtists: MutableList<Artist>) :
     RecyclerView.Adapter<ArtistAdapter.ArtistHolder>() {
@@ -26,7 +26,7 @@ class ArtistAdapter(listArtists: MutableList<Artist>) :
     inner class ArtistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(artist: Artist, parentPosition: Int) {
             itemView.artists_tv_name.text = artist.name
-            val artistTrackAdapter = TrackAdapter(artist.tracks, true)
+            val artistTrackAdapter = TrackAdapter(artist.songs, true)
             artistTrackAdapter.setOnClickListener(object : TrackAdapter.OnClickListener {
                 override fun onTrackClick(position: Int) {
                     mListener?.onItemTrackClick(position, parentPosition)

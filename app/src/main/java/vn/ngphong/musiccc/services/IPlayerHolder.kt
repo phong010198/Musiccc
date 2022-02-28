@@ -1,7 +1,7 @@
 package vn.ngphong.musiccc.services
 
-import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.utils.PlaybackListener
+import vn.ngphong.musiccc.data.models.Song
+import vn.ngphong.musiccc.util.PlaybackListener
 
 interface IPlayerHolder {
     fun isPlayerExist(): Boolean
@@ -9,10 +9,10 @@ interface IPlayerHolder {
     fun toForeground()
 
     fun initPlayer()
-    fun updateTracks(tracks: MutableList<Track>, currentTrackPos: Int)
+    fun updateTracks(songs: MutableList<Song>, currentTrackPos: Int)
     fun setCurrentTrackByPos(position: Int)
     fun setRandomTrackPos()
-    fun getCurrentTrack(): Track?
+    fun getCurrentTrack(): Song?
     fun getResumePosition(): Int
     fun getCurrentPosition(): Int?
 

@@ -17,7 +17,7 @@ class MusicService : Service() {
             get() = this@MusicService
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         if (playerHolder == null) {
             playerHolder = PlayerHolder(this)
             notificationMusiccc = NotificationMusiccc(this)

@@ -9,7 +9,7 @@
     card_view:cardBackgroundColor="@android:color/white"
     card_view:cardCornerRadius="1dp"
     card_view:cardUseCompatPadding="false"
-    tools:context=".views.fragments.FooterPlayerFragment">
+    tools:context=".ui.fragments.FooterPlayerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

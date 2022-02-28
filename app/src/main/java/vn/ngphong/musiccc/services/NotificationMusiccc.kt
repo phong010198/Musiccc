@@ -14,10 +14,10 @@ import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import vn.ngphong.musiccc.R
-import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.utils.PlaybackListener
-import vn.ngphong.musiccc.utils.Tool
-import vn.ngphong.musiccc.views.activities.MainActivity
+import vn.ngphong.musiccc.data.models.Song
+import vn.ngphong.musiccc.util.PlaybackListener
+import vn.ngphong.musiccc.util.Tool
+import vn.ngphong.musiccc.ui.MainActivity
 
 class NotificationMusiccc internal constructor(private val mMusicService: MusicService) {
     companion object {
@@ -108,21 +108,21 @@ class NotificationMusiccc internal constructor(private val mMusicService: MusicS
         return channelId
     }
 
-    private fun updateMetaData(track: Track) {
+    private fun updateMetaData(song: Song) {
         mediaSession = MediaSessionCompat(context, "Musiccc")
         mediaSession!!.setMetadata(
             MediaMetadataCompat.Builder()
                 .putBitmap(
                     MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
-                    if (Tool.getTrackPicture(track.data) != null) Tool.getTrackPicture(track.data)
+                    if (Tool.getTrackPicture(song.data) != null) Tool.getTrackPicture(song.data)
                     else
                         BitmapFactory.decodeResource(
                             context.resources,
                             R.mipmap.ic_launcher_foreground
                         )
                 )
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.artist)
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.title)
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.artist)
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.title)
                 .build()
         )
     }

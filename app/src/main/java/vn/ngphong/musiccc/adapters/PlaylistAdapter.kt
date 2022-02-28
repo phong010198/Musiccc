@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_playlist.view.*
 import vn.ngphong.musiccc.R
-import vn.ngphong.musiccc.models.Playlist
-import vn.ngphong.musiccc.models.Track
-import vn.ngphong.musiccc.utils.Tool
+import vn.ngphong.musiccc.data.models.Playlist
+import vn.ngphong.musiccc.data.models.Song
+import vn.ngphong.musiccc.util.Tool
 
 class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistHolder>() {
@@ -33,10 +33,10 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
                 itemView.playlist_img_art.visibility = View.VISIBLE
                 itemView.playlist_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
             } else {
-                if (playlist.tracks.size < 4) {
+                if (playlist.songs.size < 4) {
                     itemView.grid_playlist_art.visibility = View.GONE
                     itemView.playlist_img_art.visibility = View.VISIBLE
-                    val art = Tool.getTrackPicture(playlist.tracks[0].data)
+                    val art = Tool.getTrackPicture(playlist.songs[0].data)
                     if (art != null) {
                         itemView.playlist_img_art.setImageBitmap(art)
                     } else {
@@ -45,25 +45,25 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
                 } else {
                     itemView.grid_playlist_art.visibility = View.VISIBLE
                     itemView.playlist_img_art.visibility = View.GONE
-                    var art = Tool.getTrackPicture(playlist.tracks[0].data)
+                    var art = Tool.getTrackPicture(playlist.songs[0].data)
                     if (art != null) {
                         itemView.playlist_img_art1.setImageBitmap(art)
                     } else {
                         itemView.playlist_img_art1.setImageResource(R.mipmap.ic_launcher_foreground)
                     }
-                    art = Tool.getTrackPicture(playlist.tracks[1].data)
+                    art = Tool.getTrackPicture(playlist.songs[1].data)
                     if (art != null) {
                         itemView.playlist_img_art2.setImageBitmap(art)
                     } else {
                         itemView.playlist_img_art2.setImageResource(R.mipmap.ic_launcher_foreground)
                     }
-                    art = Tool.getTrackPicture(playlist.tracks[2].data)
+                    art = Tool.getTrackPicture(playlist.songs[2].data)
                     if (art != null) {
                         itemView.playlist_img_art3.setImageBitmap(art)
                     } else {
                         itemView.playlist_img_art3.setImageResource(R.mipmap.ic_launcher_foreground)
                     }
-                    art = Tool.getTrackPicture(playlist.tracks[3].data)
+                    art = Tool.getTrackPicture(playlist.songs[3].data)
                     if (art != null) {
                         itemView.playlist_img_art4.setImageBitmap(art)
                     } else {
@@ -100,8 +100,8 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
         notifyDataSetChanged()
     }
 
-    fun updateNewList(position: Int, newPlaylistTracks: MutableList<Track>) {
-        playlists[position].tracks = newPlaylistTracks
+    fun updateNewList(position: Int, newPlaylistSongs: MutableList<Song>) {
+        playlists[position].songs = newPlaylistSongs
         notifyDataSetChanged()
     }
 

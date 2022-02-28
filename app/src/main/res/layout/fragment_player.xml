@@ -9,7 +9,7 @@
     android:fontFamily="sans-serif"
     android:orientation="vertical"
     android:padding="@dimen/padding_normal"
-    tools:context=".views.fragments.PlayerFragment">
+    tools:context=".ui.fragments.PlayerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
