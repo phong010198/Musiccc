@@ -3,22 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/color_background_item">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small">
+        android:background="@color/background">
 
-        <ImageView
-            android:id="@+id/artist_img_artist"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:src="@mipmap/ic_artist_foreground"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/artist_img_artist_cont"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            app:cardCornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="@id/artist_img_play"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toTopOf="@id/artist_img_play">
+
+            <ImageView
+                android:id="@+id/artist_img_artist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_liked"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/artist_tv_name"
@@ -30,22 +38,22 @@
             android:fontFamily="sans-serif"
             android:maxLines="1"
             android:text="@string/app_name"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/txt_xlarge"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/tv_xlarge"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/artist_img_artist"
-            app:layout_constraintStart_toEndOf="@+id/artist_img_artist"
-            app:layout_constraintTop_toTopOf="@id/artist_img_artist" />
+            app:layout_constraintBottom_toBottomOf="@id/artist_img_play"
+            app:layout_constraintEnd_toStartOf="@id/artist_img_play"
+            app:layout_constraintStart_toEndOf="@+id/artist_img_artist_cont"
+            app:layout_constraintTop_toTopOf="@id/artist_img_play" />
 
         <ImageView
             android:id="@+id/artist_img_play"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:padding="@dimen/padding_small"
-            android:src="@mipmap/ic_play_foreground"
-            app:layout_constraintBottom_toBottomOf="@id/artist_img_artist"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:padding="@dimen/padding_normal"
+            android:src="@drawable/ic_play"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/artist_img_artist"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -54,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/artist_img_artist" />
+            app:layout_constraintTop_toBottomOf="@id/artist_img_play" />
 
         <View
             android:layout_width="match_parent"

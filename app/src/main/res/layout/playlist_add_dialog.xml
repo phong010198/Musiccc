@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_large"
-    android:orientation="vertical">
+    android:background="@color/background"
+    android:fontFamily="sans-serif"
+    android:paddingStart="@dimen/padding_large"
+    android:paddingTop="@dimen/padding_large"
+    android:paddingEnd="@dimen/padding_large">
 
     <TextView
+        android:id="@+id/playlist_new_tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        android:fontFamily="sans-serif"
         android:text="@string/enter_name"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/txt_large"
-        android:textStyle="italic" />
+        android:textColor="@color/text_dim"
+        android:textSize="@dimen/tv_large"
+        android:textStyle="italic"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/playlist_new_edt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
         android:autofillHints="Playlist"
+        android:background="@drawable/shape_091227_stroke_eaf0ff"
         android:inputType="text"
+        android:padding="@dimen/_4sdp"
+        android:textColor="@color/text_white"
+        app:layout_constraintTop_toBottomOf="@id/playlist_new_tv_name"
         tools:ignore="LabelFor" />
 
     <TextView
+        android:id="@+id/playlist_new_tv_pick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        android:fontFamily="sans-serif"
         android:text="@string/pick_some_tracks"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/txt_large"
-        android:textStyle="italic" />
+        android:textColor="@color/text_dim"
+        android:textSize="@dimen/tv_large"
+        android:textStyle="italic"
+        app:layout_constraintTop_toBottomOf="@id/playlist_new_edt_name" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_playlist_new_add"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playlist_new_tv_pick" />
+</androidx.constraintlayout.widget.ConstraintLayout>

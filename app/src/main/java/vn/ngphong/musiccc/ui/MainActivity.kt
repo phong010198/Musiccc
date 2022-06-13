@@ -1,31 +1,29 @@
 package vn.ngphong.musiccc.ui
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ResolveInfo
+import android.content.ServiceConnection
 import android.os.Build
-import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import androidx.activity.viewModels
-import com.google.android.material.tabs.TabLayout
-import vn.ngphong.musiccc.R
+import dagger.hilt.android.AndroidEntryPoint
 import vn.ngphong.musiccc.BR
-import vn.ngphong.musiccc.adapters.SectionsPagerAdapter
+import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.base.BaseActivity
 import vn.ngphong.musiccc.data.local.DataLoader
 import vn.ngphong.musiccc.databinding.ActivityMainBinding
+import vn.ngphong.musiccc.services.IPlayerHolder
+import vn.ngphong.musiccc.services.MusicService
+import vn.ngphong.musiccc.services.NotificationMusiccc
+import vn.ngphong.musiccc.ui.home.HomeFragment
 import vn.ngphong.musiccc.util.MusicPreference
 import vn.ngphong.musiccc.util.PlaybackListener
-import vn.ngphong.musiccc.util.Tool
-import vn.ngphong.musiccc.ui.fragments.PlayerFragment
 import java.util.*
-import kotlin.system.exitProcess
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), View.OnClickListener {
-    companion object {
-        fun getStartIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
-    }
-
+@AndroidEntryPoint
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val layoutId: Int
         get() = R.layout.activity_main
 
@@ -34,18 +32,50 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), View.On
 
     override val viewModel: MainViewModel by viewModels()
 
+    var musicService: MusicService? = null
+    var iPlayerHolder: IPlayerHolder? = null
+    var notificationMusiccc: NotificationMusiccc? = null
+    lateinit var playerIntent: Intent
+
+    private var serviceBound = false
+
+    private var serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            musicService = (service as MusicService.MusicBinder).service
+            iPlayerHolder = musicService!!.playerHolder
+            notificationMusiccc = musicService!!.notificationMusiccc
+            onServiceConnected()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            musicService = null
+        }
+    }
+
     override fun initView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+        viewModel.loadAllSongs(applicationContext)
+        binSer()
+        musicPreference = MusicPreference(this)
+        supportFragmentManager.beginTransaction()
+            .add(R.id.layout_main, HomeFragment.newInstance(), HomeFragment::class.java.name)
+            .addToBackStack(HomeFragment::class.java.name).commit()
     }
 
     override fun setupObserver() {
+        viewModel.currentSongList.observe(this) {
+            iPlayerHolder!!.updateTracks(it, 0)
+        }
+        viewModel.currentSongPos.observe(this) {
+            iPlayerHolder!!.setCurrentTrackByPos(it)
+        }
     }
 
     private var firstPlay = true
     private var mPlaybackListener: MyPlaybackListener? = null
     private var musicPreference: MusicPreference? = null
-
-    private val playerFrag = PlayerFragment()
-    private var sectionsPagerAdapter: SectionsPagerAdapter? = null
 
     inner class MyPlaybackListener : PlaybackListener() {
         override fun onStateChanged(state: Int) {
@@ -60,45 +90,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), View.On
         }
     }
 
-    override fun onServiceConnected() {
+    private fun onServiceConnected() {
         if (mPlaybackListener == null) {
             mPlaybackListener = MyPlaybackListener()
             iPlayerHolder!!.setPlaybackListener(mPlaybackListener!!)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
-        binSer()
-        setupViewPager()
-        footer_img_previous.setOnClickListener(this)
-        footer_img_playPause.setOnClickListener(this)
-        footer_img_next.setOnClickListener(this)
-        frame_footer.setOnClickListener(this)
-        close.setOnClickListener(this)
-        send_mail.setOnClickListener(this)
-        musicPreference = MusicPreference(this)
-    }
-
-    private fun setupViewPager() {
-        tabs.apply {
-            addTab(this.newTab().setText("Tracks"))
-            addTab(this.newTab().setText("Artists"))
-            addTab(this.newTab().setText("Albums"))
-            addTab(this.newTab().setText("Playlists"))
-            this.tabGravity = TabLayout.GRAVITY_FILL
-        }
-        sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        view_pager.apply {
-            adapter = sectionsPagerAdapter
-            currentItem = 0
-            addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        }
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
     }
 
     override fun onStart() {
@@ -123,74 +119,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), View.On
     }
 
     override fun onBackPressed() {
-        when {
-            supportFragmentManager.findFragmentByTag("albumTracksFrag.tag") != null -> {
-                supportFragmentManager.popBackStack()
-                main_content.visibility = View.VISIBLE
-                app_bar.visibility = View.VISIBLE
-            }
-            supportFragmentManager.findFragmentByTag("playlistTracksFrag.tag") != null -> {
-                supportFragmentManager.popBackStack()
-                main_content.visibility = View.VISIBLE
-                app_bar.visibility = View.VISIBLE
-            }
-            supportFragmentManager.backStackEntryCount == 1 -> {
-                supportFragmentManager.popBackStackImmediate()
-                main_content.visibility = View.VISIBLE
-                app_bar.visibility = View.VISIBLE
-            }
-            else -> {
+        when (supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name) {
+            HomeFragment::class.java.name -> {
                 val intent = Intent()
                 intent.action = Intent.ACTION_MAIN
                 intent.addCategory(Intent.CATEGORY_HOME)
                 startActivity(intent)
             }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.footer_img_previous -> playPrev()
-            R.id.footer_img_playPause -> resumePause()
-            R.id.footer_img_next -> playNext()
-            R.id.close -> {
-                finish()
-                exitProcess(0)
-            }
-            R.id.send_mail -> {
-                val emailIntent = Intent(Intent.ACTION_SEND)
-                val aEmailList = arrayOf("phong010198@gmail.com", "16021832@vnu.edu.vn")
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, aEmailList)
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Gop y Musiccc")
-                emailIntent.type = "text/plain"
-                val pm = packageManager
-                val matches =
-                    pm.queryIntentActivities(intent, 0)
-                var best: ResolveInfo? = null
-                for (info in matches) if (info.activityInfo.packageName.endsWith(".gm") ||
-                    info.activityInfo.name.toLowerCase(Locale.ROOT).contains("gmail")
-                ) best = info
-                if (best != null) intent.setClassName(
-                    best.activityInfo.packageName,
-                    best.activityInfo.name
-                )
-                startActivity(emailIntent)
-            }
-            R.id.frame_footer -> if (!firstPlay) {
-                val playerTag = playerFrag.tag
-                val popped = supportFragmentManager.popBackStackImmediate(playerTag, 0)
-                if (!popped && supportFragmentManager.findFragmentByTag(playerTag) == null) {
-                    supportFragmentManager.beginTransaction().addToBackStack(playerTag)
-                        .add(R.id.full_frame, playerFrag, playerTag).show(playerFrag).commit()
-                }
-                hideView()
+            else -> {
+                super.onBackPressed()
             }
         }
-    }
-
-    fun hideView() {
-        main_content.visibility = View.GONE
-        app_bar.visibility = View.GONE
     }
 
     private fun playPrev() {
@@ -219,20 +158,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), View.On
 
     fun updateFooter() {
         firstPlay = false
-        val track = iPlayerHolder!!.getCurrentTrack()!!
-        footer_txt_title.text = track.title
-        footer_txt_artist.text = track.artist
-        val art = Tool.getTrackPicture(track.data)
-        if (art != null) {
-            footer_img_art.setImageBitmap(art)
-        } else {
-            footer_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+        viewModel.currentSong.value = iPlayerHolder!!.getCurrentTrack()
+    }
+
+    private fun binSer() {
+        playerIntent = Intent(this, MusicService::class.java)
+        playerIntent.action = ""
+        bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+        startService(playerIntent)
+        serviceBound = true
+    }
+
+    private fun unbindSer() {
+        if (serviceBound) {
+            unbindService(serviceConnection)
+            serviceBound = false
         }
-        @Suppress("DEPRECATION")
-        if (iPlayerHolder!!.getState() == PlaybackListener.State.PAUSED) {
-            footer_img_playPause.setImageResource(R.mipmap.ic_play_foreground)
-        } else {
-            footer_img_playPause.setImageResource(R.mipmap.ic_pause_foreground)
-        }
+    }
+
+    fun getService(): MusicService? {
+        return if (musicService != null) musicService!!
+        else null
     }
 }

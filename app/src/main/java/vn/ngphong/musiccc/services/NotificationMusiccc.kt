@@ -46,13 +46,13 @@ class NotificationMusiccc internal constructor(private val mMusicService: MusicS
 
     private fun notificationAction(action: String): NotificationCompat.Action {
         val icon = when (action) {
-            PREV_ACTION -> R.mipmap.ic_previous_foreground
+            PREV_ACTION -> R.drawable.ic_previous
             RESUME_PAUSE_ACTION ->
                 if (mMusicService.playerHolder?.getState() == PlaybackListener.State.PAUSED)
-                    R.mipmap.ic_play_foreground
-                else R.mipmap.ic_pause_foreground
-            NEXT_ACTION -> R.mipmap.ic_next_foreground
-            else -> R.mipmap.ic_next_foreground
+                    R.drawable.ic_play
+                else R.drawable.ic_pause
+            NEXT_ACTION -> R.drawable.ic_next
+            else -> R.drawable.ic_next
         }
         return NotificationCompat.Action.Builder(icon, action, playerPendingIntent(action)).build()
     }
@@ -62,10 +62,13 @@ class NotificationMusiccc internal constructor(private val mMusicService: MusicS
         updateMetaData(track!!)
         val intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val pIntent = PendingIntent.getActivity(
-            context,
-            System.currentTimeMillis().toInt(), intent, 0
-        )
+        val pIntent =
+            PendingIntent.getActivity(
+                context,
+                System.currentTimeMillis().toInt(),
+                intent,
+                0
+            )
         var art = Tool.getTrackPicture(track.data)
         if (art == null) {
             art = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_foreground)

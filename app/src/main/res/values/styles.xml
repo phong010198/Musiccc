@@ -1,18 +1,23 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="Theme.Musiccc" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:background">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
     </style>
 
     <style name="lineDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/dividerLineColorGrey</item>
+        <item name="android:background">@color/divider_grey</item>
         <item name="android:layout_marginLeft">@dimen/margin_small</item>
     </style>
 
@@ -20,8 +25,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="BlackSeekBar" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">#454545</item>
+    <style name="SeekBar.White" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">@color/text_white</item>
+        <item name="android:progressTint">@color/text_white</item>
+        <item name="android:thumbTint">@color/text_white</item>
     </style>
-
 </resources>

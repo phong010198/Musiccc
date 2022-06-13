@@ -25,7 +25,7 @@ class DataLoader(val context: Context) {
             MediaStore.Audio.AudioColumns.DATA
         )
         val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
-        val sortOrder = "${MediaStore.Audio.AudioColumns.TITLE} COLLATE LOCALIZED ASC"
+        val sortOrder = "${MediaStore.Audio.AudioColumns.TITLE} COLLATE NOCASE ASC"
         val cursor = context.contentResolver.query(uri, projection, selection, null, sortOrder)
         return SongCursorWrapper(cursor!!)
     }
@@ -43,70 +43,6 @@ class DataLoader(val context: Context) {
         }
         cursor.close()
         return songs
-    }
-
-    fun getArtists(): MutableList<Artist> {
-        val artists = mutableListOf<Artist>()
-        val songs = querySongs()
-        if (songs.isNotEmpty()) {
-            for (song in songs) {
-                var exist = false
-                for (artist in artists) {
-                    if (artist.songs.isNotEmpty() && artist.songs[0].artistID == song.artistID) {
-                        artist.songs.add(song)
-                        exist = true
-                        break
-                    }
-                }
-                if (exist) {
-                    continue
-                } else {
-                    val artist = Artist(song.artistID, song.artist, mutableListOf(song))
-                    artists.add(artist)
-                }
-            }
-        }
-        if (artists.size > 1) {
-            artists.sortWith { obj1, obj2 ->
-                obj1.name.compareTo(
-                    obj2.name,
-                    ignoreCase = true
-                )
-            }
-        }
-        return artists
-    }
-
-    fun getAlbums(): MutableList<Album> {
-        val albums = mutableListOf<Album>()
-        val songs = querySongs()
-        if (songs.isNotEmpty()) {
-            for (song in songs) {
-                var exist = false
-                for (album in albums) {
-                    if (album.songs.isNotEmpty() && album.songs[0].albumID == song.albumID) {
-                        album.songs.add(song)
-                        exist = true
-                        break
-                    }
-                }
-                if (exist) {
-                    continue
-                } else {
-                    val album = Album(song.albumID, song.album, mutableListOf(song))
-                    albums.add(album)
-                }
-            }
-        }
-        if (albums.size > 1) {
-            albums.sortWith { obj1, obj2 ->
-                obj1.name.compareTo(
-                    obj2.name,
-                    ignoreCase = true
-                )
-            }
-        }
-        return albums
     }
 
     fun genPlaylist(): MutableList<Playlist> {

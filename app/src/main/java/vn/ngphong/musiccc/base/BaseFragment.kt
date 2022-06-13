@@ -12,10 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
+import vn.ngphong.musiccc.ui.MainViewModel
 
 abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment() {
-    val MY_PREFS_NAME = "MyPrefsFile"
-    val TAG = "ngphong"
+    val prefsName = "MyPrefsFile"
+    val tagLog = "ngphong"
+
     var baseActivity: AppCompatActivity? = null
         private set
 
@@ -28,6 +32,8 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
 
     @get:LayoutRes
     abstract val layoutId: Int
+
+    val activityViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

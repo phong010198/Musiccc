@@ -2,9 +2,6 @@ package vn.ngphong.musiccc.di
 
 import android.util.Log
 import androidx.viewbinding.BuildConfig
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -62,9 +59,9 @@ class ApplicationModule {
     @Singleton
     fun getMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
-    @Provides
-    @Singleton
-    fun provideFirebase(): FirebaseAuth = Firebase.auth
+//    @Provides
+//    @Singleton
+//    fun provideFirebase(): FirebaseAuth = Firebase.auth
 
     @Provides
     @Singleton

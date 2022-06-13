@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e6c35f</color>
+    <color name="colorPrimary">#F2C94C</color>
     <color name="colorPrimaryDark">#DDA829</color>
     <color name="colorPrimaryLight">#F8E18E</color>
     <color name="colorAccent">#454545</color>
@@ -10,8 +10,13 @@
     <color name="tabIndicator">#DDA829</color>
     <color name="tabDivider">#4e4c47</color>
 
-    <color name="dividerLineColorGrey">#C5C5C5</color>
-    <color name="grey_text">#757575</color>
+    <color name="background">#091227</color>
+    <color name="transparent">#00000000</color>
+    <color name="text_white">#EAF0FF</color>
+    <color name="text_dim">#B2A5C0FF</color>
+    <color name="text_grey_dark">#454545</color>
+
+    <color name="divider_grey">#C5C5C5</color>
 
     <color name="item_pressed">#DDA829</color>
 </resources>
