@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.item_playlist.view.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Playlist
 import vn.ngphong.musiccc.models.Track
+import vn.ngphong.musiccc.utils.DoAsync
 import vn.ngphong.musiccc.utils.Tool
 
 class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
@@ -36,38 +37,46 @@ class PlaylistAdapter(listPlaylists: MutableList<Playlist>) :
                 if (playlist.tracks.size < 4) {
                     itemView.grid_playlist_art.visibility = View.GONE
                     itemView.playlist_img_art.visibility = View.VISIBLE
-                    val art = Tool.getTrackPicture(playlist.tracks[0].data)
-                    if (art != null) {
-                        itemView.playlist_img_art.setImageBitmap(art)
-                    } else {
-                        itemView.playlist_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+                    DoAsync {
+                        val art = Tool.getTrackPicture(playlist.tracks[0].data)
+                        itemView.rootView.post {
+                            if (art != null) {
+                                itemView.playlist_img_art.setImageBitmap(art)
+                            } else {
+                                itemView.playlist_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+                            }
+                        }
                     }
                 } else {
                     itemView.grid_playlist_art.visibility = View.VISIBLE
                     itemView.playlist_img_art.visibility = View.GONE
-                    var art = Tool.getTrackPicture(playlist.tracks[0].data)
-                    if (art != null) {
-                        itemView.playlist_img_art1.setImageBitmap(art)
-                    } else {
-                        itemView.playlist_img_art1.setImageResource(R.mipmap.ic_launcher_foreground)
-                    }
-                    art = Tool.getTrackPicture(playlist.tracks[1].data)
-                    if (art != null) {
-                        itemView.playlist_img_art2.setImageBitmap(art)
-                    } else {
-                        itemView.playlist_img_art2.setImageResource(R.mipmap.ic_launcher_foreground)
-                    }
-                    art = Tool.getTrackPicture(playlist.tracks[2].data)
-                    if (art != null) {
-                        itemView.playlist_img_art3.setImageBitmap(art)
-                    } else {
-                        itemView.playlist_img_art3.setImageResource(R.mipmap.ic_launcher_foreground)
-                    }
-                    art = Tool.getTrackPicture(playlist.tracks[3].data)
-                    if (art != null) {
-                        itemView.playlist_img_art4.setImageBitmap(art)
-                    } else {
-                        itemView.playlist_img_art4.setImageResource(R.mipmap.ic_launcher_foreground)
+                    DoAsync {
+                        val art1 = Tool.getTrackPicture(playlist.tracks[0].data)
+                        val art2 = Tool.getTrackPicture(playlist.tracks[1].data)
+                        val art3 = Tool.getTrackPicture(playlist.tracks[2].data)
+                        val art4 = Tool.getTrackPicture(playlist.tracks[3].data)
+                        itemView.rootView.post {
+                            if (art1 != null) {
+                                itemView.playlist_img_art1.setImageBitmap(art1)
+                            } else {
+                                itemView.playlist_img_art1.setImageResource(R.mipmap.ic_launcher_foreground)
+                            }
+                            if (art2 != null) {
+                                itemView.playlist_img_art2.setImageBitmap(art2)
+                            } else {
+                                itemView.playlist_img_art2.setImageResource(R.mipmap.ic_launcher_foreground)
+                            }
+                            if (art3 != null) {
+                                itemView.playlist_img_art3.setImageBitmap(art3)
+                            } else {
+                                itemView.playlist_img_art3.setImageResource(R.mipmap.ic_launcher_foreground)
+                            }
+                            if (art4 != null) {
+                                itemView.playlist_img_art4.setImageBitmap(art4)
+                            } else {
+                                itemView.playlist_img_art4.setImageResource(R.mipmap.ic_launcher_foreground)
+                            }
+                        }
                     }
                 }
             }

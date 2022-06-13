@@ -123,7 +123,7 @@ class DataLoader(val context: Context) {
             MediaStore.Audio.AudioColumns.DATA
         )
         val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
-        val sortOrder = "${MediaStore.Audio.AudioColumns.TITLE} COLLATE LOCALIZED ASC"
+        val sortOrder = "${MediaStore.Audio.AudioColumns.TITLE} COLLATE NOCASE ASC"
         val cursor = context.contentResolver.query(uri, projection, selection, null, sortOrder)
         return TrackCursorWrapper(cursor!!)
     }

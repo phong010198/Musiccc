@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_track.view.*
 import vn.ngphong.musiccc.R
 import vn.ngphong.musiccc.models.Track
+import vn.ngphong.musiccc.utils.DoAsync
 import vn.ngphong.musiccc.utils.Tool
 
 class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
@@ -32,11 +33,15 @@ class TrackAdapter(listTrack: MutableList<Track>?, showPlusButton: Boolean) :
             itemView.track_tv_title.text = track.title
             itemView.track_tv_artist.text = track.artist
             itemView.track_tv_duration.text = Tool.formatTime(track.duration)
-            val art = Tool.getTrackPicture(track.data)
-            if (art != null) {
-                itemView.track_img_art.setImageBitmap(art)
-            } else {
-                itemView.track_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+            DoAsync {
+                val art = Tool.getTrackPicture(track.data)
+                itemView.rootView.post {
+                    if (art != null) {
+                        itemView.track_img_art.setImageBitmap(art)
+                    } else {
+                        itemView.track_img_art.setImageResource(R.mipmap.ic_launcher_foreground)
+                    }
+                }
             }
         }
     }
